@@ -14,13 +14,6 @@ class PAO:
     def __init__(self):
         self.pao = {}
         self.init_pao_list()
-            # '00': {PAO_Enum.PERSON:'Ozzy Osborne',PAO_Enum.ACTION:'eating a bat',PAO_Enum.OBJECT:'bat'},
-            # '01': {PAO_Enum.PERSON:'George Washington',PAO_Enum.ACTION:'sailing a boat',PAO_Enum.OBJECT:'boat'},
-            # '02': {PAO_Enum.PERSON:'Obi-Wan Kanobi',PAO_Enum.ACTION:'fighting with lightsabers',PAO_Enum.OBJECT:'lightsaber'},
-            # '03': {PAO_Enum.PERSON:'Octopus',PAO_Enum.ACTION:'grabbing fish with tenticals',PAO_Enum.OBJECT:'tenticles'},
-            # '04': {PAO_Enum.PERSON:'Odin',PAO_Enum.ACTION:'riding horse with sword',PAO_Enum.OBJECT:'sword'},
-            # '05': {PAO_Enum.PERSON:'Odin',PAO_Enum.ACTION:'riding horse',PAO_Enum.OBJECT:''},
-            # }
     
     def init_pao_list(self):
         with open('pao_list.csv') as csvfile:
@@ -31,11 +24,8 @@ class PAO:
                     PAO_Enum.PERSON:row['PERSON'],
                     PAO_Enum.ACTION:row['ACTION'],
                     PAO_Enum.OBJECT:row['OBJECT']
-                    }
-                
+                    }              
 
-
-    
 def main():
     pao = PAO()
     test = '04'
