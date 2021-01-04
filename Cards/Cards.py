@@ -31,11 +31,13 @@ class Cards:
         self.deck = shuffled_deck
         return shuffled_deck
 
+    def sort_deck(self):
+        self.deck = list(self.deck_ref.keys())
+
 def main():
     cards = Cards()
     cards.shuffle_cards()
     print(cards.deck)
-    print(len(cards.deck))
 
 if __name__ == "__main__":
     main()
