@@ -1,6 +1,7 @@
 __author__ = 'torreschris'
 
 from enum import Enum
+import tkinter as tk 
 import csv
 
 class PAO_Enum(Enum):
@@ -16,7 +17,9 @@ class PAO:
         self.init_pao_list()
     
     def init_pao_list(self):
-        with open('pao_list.csv') as csvfile:
+        #file_path = tk.filedialog.askopenfilename()
+        file_path = r'PAO/pao_list.csv'
+        with open(file_path) as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
                 self.pao[row['NUMBER']] = {
@@ -27,8 +30,10 @@ class PAO:
                     }              
 
 def main():
+    #textboxNumber = tk.text()
+
     pao = PAO()
-    test = '04'
+    test = '00'
     print(test)
     print(pao.pao[test][PAO_Enum.TRANSLATION])
     print(pao.pao[test][PAO_Enum.PERSON]) 
