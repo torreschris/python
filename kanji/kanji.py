@@ -7,6 +7,7 @@ class GuessingGame:
     def __init__(self, master):
         self.master = master
         master.title("Learn Kanji")
+        master.eval('tk::PlaceWindow . center')
 
         dir_path = os.path.dirname(os.path.realpath(__file__))
         filepath = os.path.join(dir_path, 'allkanji.csv')
@@ -21,20 +22,23 @@ class GuessingGame:
         self.num_guesses = 0
         self.randomrow = 0
         self.level = 1
+        self.stage = 1
+        self.total_exp = 0
+        self.kanji_exp = 0
 
         self.message = "Kanji Game"
         self.label_text = StringVar()
         self.label_text.set(self.message)
         self.label = Label(master, textvariable=self.label_text)
-
-        self.status_message = "Lvl {}".format(self.level)
+        
+        # Statusbar 
         self.status_label_text = StringVar()
-        self.status_label_text.set(self.status_message)
         self.status_Label = Label(master, textvariable=self.status_label_text)
+        self.update_status()
 
         self.entry = Entry(master)
 
-        self.guess_button = Button(master, text="Start", command=self.guess_kanji)
+        self.guess_button = Button(master, text="Start - Romaji", command=self.guess_kanji)
         self.reset_button = Button(master, text="Next", command=self.reset, state=DISABLED)
 
         self.label.grid(row=0, column=0, padx=5, pady=5, columnspan=2, sticky=W+E)
@@ -49,7 +53,8 @@ class GuessingGame:
         while True:
             self.randomrow = random.randint(0, len(self.mydict)-1)
             if int(self.mydict[self.randomrow]['level']) <= self.level:
-                break
+                if int(self.mydict[self.randomrow]['stage']) <= self.stage:
+                    break
         self.message = self.mydict[self.randomrow]['japanese']     
         self.label_text.set(self.message)
 
@@ -57,13 +62,8 @@ class GuessingGame:
         if not self.mydict[self.randomrow]['pronounciation']:
             self.pick_Random_Kanji()
         
-        if int(self.mydict[self.randomrow]['level']) > self.level:
-            print(int(self.mydict[self.randomrow]['level']))
-            self.pick_Random_Kanji()
-        
-
     def guess_kanji(self):
-        if self.guess_button['text'] == 'Start':
+        if self.guess_button['text'] == 'Start - Romaji':
             self.guess_button.configure(text='Submit')
             self.pick_Random_Kanji()
             return
@@ -71,28 +71,56 @@ class GuessingGame:
         pronounciation = self.mydict[self.randomrow]['pronounciation']
         translation = self.mydict[self.randomrow]['translation']
         self.guess = self.entry.get().strip()
+
         if not self.guess:
             return
         elif self.guess == pronounciation:
-            self.message = "Correct!\n{}: {}\nTranslation: {}".format(
+            self.message = "Correct!\n\n{}: {}\n\nTranslation: {}".format(
                 self.message, pronounciation, translation)
+            self.exp_up()
         else:
-            self.message = "Incorrect\n{}: {}\nTranslation: {}".format(
+            self.message = "Incorrect\n\n{}: {}\n\nTranslation: {}".format(
                 self.message, pronounciation, translation)
 
         self.label_text.set(self.message)
         self.guess_button.configure(state=DISABLED)
         self.reset_button.configure(state=NORMAL)
+        self.master.eval('tk::PlaceWindow . center')
 
     def reset(self):
         self.entry.delete(0, END)
         self.guess = ''
-        self.randomrow = 0
+        #self.randomrow = 0
 
         self.pick_Random_Kanji()
+        self.update_status()
 
         self.guess_button.configure(state=NORMAL)
         self.reset_button.configure(state=DISABLED)
+        self.master.eval('tk::PlaceWindow . center')
+
+    def exp_up(self):
+        self.total_exp += 1
+        self.kanji_exp += 1
+
+        self.set_kanji_exp()
+        self.update_status()
+        
+    def set_kanji_exp(self):
+        self.mydict[self.randomrow]['EXP'] = str(self.kanji_exp)
+
+    def update_status(self):
+        self.get_kanji_exp()
+        self.status_message = "Lvl: {}\tStage: {}\tKanji EXP: {}".format(
+            self.level, self.stage, self.kanji_exp)
+        self.status_label_text.set(self.status_message)
+
+    def get_kanji_exp(self):
+        if self.mydict[self.randomrow]['EXP'] == 'FALSE':
+            self.mydict[self.randomrow]['EXP'] = '0'
+        
+        self.kanji_exp = int(self.mydict[self.randomrow]['EXP'])
+
 
 root = Tk()
 my_gui = GuessingGame(root)
