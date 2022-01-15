@@ -15,76 +15,81 @@ class GuessingGame:
         for row in mydict:
             self.mydict.append(row)
 
-        self.guess = None
+        # Add method to read JSON file (if exists) and set EXP column to 5 
+
+        self.guess = ''
         self.num_guesses = 0
+        self.randomrow = 0
+        self.level = 1
 
         self.message = "Kanji Game"
         self.label_text = StringVar()
         self.label_text.set(self.message)
         self.label = Label(master, textvariable=self.label_text)
 
-        vcmd = master.register(self.validate) # we have to wrap the command
-        self.entry = Entry(master, validate="key", validatecommand=(vcmd, '%P'))
+        self.status_message = "Lvl {}".format(self.level)
+        self.status_label_text = StringVar()
+        self.status_label_text.set(self.status_message)
+        self.status_Label = Label(master, textvariable=self.status_label_text)
+
+        self.entry = Entry(master)
 
         self.guess_button = Button(master, text="Start", command=self.guess_kanji)
         self.reset_button = Button(master, text="Next", command=self.reset, state=DISABLED)
 
-        self.label.grid(row=0, column=0, columnspan=2, sticky=W+E)
-        self.entry.grid(row=1, column=0, columnspan=2, sticky=W+E)
-        self.guess_button.grid(row=2, column=0)
-        self.reset_button.grid(row=2, column=1)
+        self.label.grid(row=0, column=0, padx=5, pady=5, columnspan=2, sticky=W+E)
+        self.label.configure(font=("Courier", 44))
 
-    def validate(self, new_text):
-        if not new_text: # the field is being cleared
-            self.guess = None
-            return True
+        self.entry.grid(row=1, column=0, padx=5, pady=5, columnspan=2, sticky=W+E)
+        self.guess_button.grid(row=2, column=0, padx=5, pady=5)
+        self.reset_button.grid(row=2, column=1, padx=5, pady=5)
+        self.status_Label.grid(row=3, columnspan=2, padx=5, pady=5)
 
-        try:
-            guess = int(new_text)
-            if 1 <= guess <= 100:
-                self.guess = guess
-                return True
-            else:
-                return False
-        except ValueError:
-            return False
+    def pick_Random_Kanji(self):
+        while True:
+            self.randomrow = random.randint(0, len(self.mydict)-1)
+            if int(self.mydict[self.randomrow]['level']) <= self.level:
+                break
+        self.message = self.mydict[self.randomrow]['japanese']     
+        self.label_text.set(self.message)
+
+        # If empty row try again
+        if not self.mydict[self.randomrow]['pronounciation']:
+            self.pick_Random_Kanji()
+        
+        if int(self.mydict[self.randomrow]['level']) > self.level:
+            print(int(self.mydict[self.randomrow]['level']))
+            self.pick_Random_Kanji()
+        
 
     def guess_kanji(self):
         if self.guess_button['text'] == 'Start':
             self.guess_button.configure(text='Submit')
+            self.pick_Random_Kanji()
+            return
 
-        randomrow = random.randint(0, len(self.mydict)-1)
-        self.message = self.mydict[randomrow]['japanese']
-        
-        self.label_text.set(self.message)
-        return
-
-        self.num_guesses += 1
-
-        if self.guess is None:
-            self.message = "Guess a number from 1 to 100"
-
-        elif self.guess == self.secret_number:
-            suffix = '' if self.num_guesses == 1 else 'es'
-            self.message = "Congratulations! You guessed the number after %d guess%s." % (self.num_guesses, suffix)
-            self.guess_button.configure(state=DISABLED)
-            self.reset_button.configure(state=NORMAL)
-
-        elif self.guess < self.secret_number:
-            self.message = "Too low! Guess again!"
+        pronounciation = self.mydict[self.randomrow]['pronounciation']
+        translation = self.mydict[self.randomrow]['translation']
+        self.guess = self.entry.get().strip()
+        if not self.guess:
+            return
+        elif self.guess == pronounciation:
+            self.message = "Correct!\n{}: {}\nTranslation: {}".format(
+                self.message, pronounciation, translation)
         else:
-            self.message = "Too high! Guess again!"
+            self.message = "Incorrect\n{}: {}\nTranslation: {}".format(
+                self.message, pronounciation, translation)
 
         self.label_text.set(self.message)
+        self.guess_button.configure(state=DISABLED)
+        self.reset_button.configure(state=NORMAL)
 
     def reset(self):
         self.entry.delete(0, END)
-        self.secret_number = random.randint(1, 100)
-        self.guess = 0
-        self.num_guesses = 0
+        self.guess = ''
+        self.randomrow = 0
 
-        self.message = "Guess a number from 1 to 100"
-        self.label_text.set(self.message)
+        self.pick_Random_Kanji()
 
         self.guess_button.configure(state=NORMAL)
         self.reset_button.configure(state=DISABLED)

@@ -1,4 +1,4 @@
-#,week,day,japanese,pronounciation,translation,1d,2d,6d,12d,30d,EXP,Last studied,
+#,level,day,japanese,pronounciation,translation,1d,2d,6d,12d,30d,EXP,Last studied,
 1,1,1,行く,iku,go,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,,
 2,1,1,見る,miru,"see, look at",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,,
 3,1,1,多い,ooi,"a lot of, many",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,,
@@ -2998,4 +2998,3 @@
 2998,43,6,機関,kikan,"agency, facility",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,,
 2999,43,6,論,ron,"argument, theory",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,,
 3000,43,6,島,tou,island,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,,
-,,,,,,0.00%,0.00%,0.00%,0.00%,0.00%,0.00%,,
