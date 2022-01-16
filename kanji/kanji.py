@@ -19,6 +19,7 @@ class GuessingGame:
         self.level = 1
         self.stage = 1
         self.total_exp = 0
+        self.kanji_exp = 0
         self.reviewcard_handicap = 4
         self.kanji_cards = 0
 
@@ -32,7 +33,6 @@ class GuessingGame:
         self.status_label_text = StringVar()
         self.status_Label = Label(master, textvariable=self.status_label_text, bg='grey')
         self.level_up_check()
-        self.kanji_exp = 0
         self.update_status()
 
         self.entry = Entry(master)
@@ -140,8 +140,6 @@ class GuessingGame:
         
         # Count review cards
         for row in self.mydict:
-            if int(row['stage']) > self.stage or int(row['level']) > self.level:
-               break
             if row['reviewcard'] == 'TRUE':
                 reviewcard_count += 1
                 self.kanji_cards = reviewcard_count - self.reviewcard_handicap
