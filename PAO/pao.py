@@ -28,12 +28,15 @@ class PAO:
 
 def main():
     pao = PAO()
-    test = '04'
-    print(test)
-    print(pao.pao[test][PAO_Enum.TRANSLATION])
-    print(pao.pao[test][PAO_Enum.PERSON]) 
-    print(pao.pao[test][PAO_Enum.ACTION]) 
-    print(pao.pao[test][PAO_Enum.OBJECT]) 
+    x1 = '04'
+    x2 = '05'
+    x3 = '06'
+    x4 = '07'
+    
+    print(pao.pao[x1][PAO_Enum.TRANSLATION])
+    print(pao.pao[x2][PAO_Enum.PERSON]) 
+    print(pao.pao[x3][PAO_Enum.ACTION]) 
+    print(pao.pao[x4][PAO_Enum.OBJECT]) 
 
 if __name__ == "__main__":
     main()
