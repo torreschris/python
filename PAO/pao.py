@@ -1,6 +1,7 @@
 __author__ = 'torreschris'
 
 from enum import Enum
+import tkinter as tk 
 import csv
 
 class PAO_Enum(Enum):
@@ -16,7 +17,9 @@ class PAO:
         self.init_pao_list()
     
     def init_pao_list(self):
-        with open('pao_list.csv') as csvfile:
+        #file_path = tk.filedialog.askopenfilename()
+        file_path = r'PAO/pao_list.csv'
+        with open(file_path) as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
                 self.pao[row['NUMBER']] = {
@@ -27,7 +30,10 @@ class PAO:
                     }              
 
 def main():
+    #textboxNumber = tk.text()
+
     pao = PAO()
+<<<<<<< HEAD
     x1 = '04'
     x2 = '05'
     x3 = '06'
@@ -37,6 +43,14 @@ def main():
     print(pao.pao[x2][PAO_Enum.PERSON]) 
     print(pao.pao[x3][PAO_Enum.ACTION]) 
     print(pao.pao[x4][PAO_Enum.OBJECT]) 
+=======
+    test = '00'
+    print(test)
+    print(pao.pao[test][PAO_Enum.TRANSLATION])
+    print(pao.pao[test][PAO_Enum.PERSON]) 
+    print(pao.pao[test][PAO_Enum.ACTION]) 
+    print(pao.pao[test][PAO_Enum.OBJECT]) 
+>>>>>>> d6335022cfa00be79c98db92b75761c6195091a4
 
 if __name__ == "__main__":
     main()
