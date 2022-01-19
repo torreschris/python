@@ -1,6 +1,7 @@
 import random
 import csv
 import os
+import codecs
 from tkinter import Tk, Label, Button, Entry, StringVar, DISABLED, NORMAL, END, W, E
 
 class GuessingGame:
@@ -47,6 +48,8 @@ class GuessingGame:
         self.guess_button.grid(row=2, column=0, padx=5, pady=5)
         self.reset_button.grid(row=2, column=1, padx=5, pady=5)
         self.status_Label.grid(row=3, columnspan=2, padx=5, pady=5)
+
+        self.entry.focus()
     
     def return_Event(self, event=None):
         if self.guess_button['state'] == 'normal':
@@ -61,7 +64,7 @@ class GuessingGame:
         if not os.path.exists(filepath):
             filepath = os.path.join(dir_path, 'allkanji.csv')
         
-        mydict = csv.DictReader(open(filepath))
+        mydict = csv.DictReader(open(filepath, encoding="utf-8"))
         self.mydict = []
         for row in mydict:
             self.mydict.append(row)
@@ -114,6 +117,7 @@ class GuessingGame:
         self.guess_button.configure(state=DISABLED)
         self.reset_button.configure(state=NORMAL)
         self.master.eval('tk::PlaceWindow . center')
+        self.entry.focus()
 
     def reset(self):
         self.entry.delete(0, END)
@@ -126,6 +130,7 @@ class GuessingGame:
         self.reset_button.configure(state=DISABLED)
         self.status_Label.configure(bg='grey')
         self.master.eval('tk::PlaceWindow . center')
+        self.entry.focus()
 
     def exp_up(self):
         self.total_exp += 1
@@ -178,7 +183,7 @@ class GuessingGame:
         ''' When closing the window, write the progress to a file'''
         dir_path = os.path.dirname(os.path.realpath(__file__))
         filepath = os.path.join(dir_path, 'player.csv')
-        with open(filepath, 'w') as csv_file: 
+        with codecs.open(filepath, 'w', 'utf-8') as csv_file: 
             writer = csv.DictWriter(csv_file, fieldnames=self.mydict[0].keys())
             writer.writeheader()
             for row in self.mydict:
