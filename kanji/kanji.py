@@ -2,6 +2,8 @@ import random
 import csv
 import os
 import codecs
+import webbrowser
+import urllib
 from tkinter import Tk, Label, Button, Entry, StringVar, DISABLED, NORMAL, END, W, E
 
 class GuessingGame:
@@ -23,12 +25,14 @@ class GuessingGame:
         self.kanji_exp = 0
         self.reviewcard_handicap = 4
         self.kanji_cards = 0
+        self.current_kanji = None
 
         self.message = "Kanji Game"
         self.label_text = StringVar()
         self.label_text.set(self.message)
         self.label = Label(master, textvariable=self.label_text)
         self.label.configure(font=("Courier", 44))
+        self.label.bind("<Button-1>", lambda e : self.open_url())
         
         # Statusbar 
         self.status_label_text = StringVar()
@@ -90,7 +94,8 @@ class GuessingGame:
                 if int(self.mydict[self.randomrow]['stage']) <= self.stage:
                     break
 
-        self.message = self.mydict[self.randomrow]['japanese']     
+        self.message = self.mydict[self.randomrow]['japanese'] 
+        self.current_kanji = self.message    
         self.label_text.set(self.message)
         
     def guess_kanji(self):
@@ -190,6 +195,15 @@ class GuessingGame:
                 writer.writerow(row)
         
         self.master.destroy()
+
+    def open_url(self):
+        if self.current_kanji:
+            url = \
+            'https://www.tanoshiijapanese.com/dictionary/kanji_details.cfm?character_id=25173&k={}'.format(
+                urllib.parse.quote(self.current_kanji, encoding='utf-8')
+            )
+            webbrowser.open_new_tab(url)
+            
 
 root = Tk()
 my_gui = GuessingGame(root)
