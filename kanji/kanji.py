@@ -26,6 +26,7 @@ class GuessingGame:
         self.reviewcard_handicap = 4
         self.kanji_cards = 0
         self.current_kanji = None
+        self.previous_kanji = None
 
         self.message = "Kanji Game"
         self.label_text = StringVar()
@@ -78,6 +79,10 @@ class GuessingGame:
         while True:
             self.randomrow = random.randint(0, len(self.mydict)-1)
 
+            if self.previous_kanji:
+                if self.previous_kanji == self.mydict[self.randomrow]['japanese']:
+                    continue
+
             # If empty row try again 
             if not self.mydict[self.randomrow]['pronounciation']:
                 continue
@@ -85,7 +90,7 @@ class GuessingGame:
             # If Kanji Review Card is TRUE then randomly display based off EXP 
             if self.mydict[self.randomrow]['reviewcard'] == 'TRUE':
                 tryagain = [True]
-                tryagain.extend([False] * self.kanji_exp)
+                tryagain.extend([False] * int(self.mydict[self.randomrow]['EXP']))
                 if random.choice(tryagain) is not True:
                     continue
 
@@ -95,7 +100,8 @@ class GuessingGame:
                     break
 
         self.message = self.mydict[self.randomrow]['japanese'] 
-        self.current_kanji = self.message    
+        self.current_kanji = self.message
+        self.previous_kanji = self.current_kanji  
         self.label_text.set(self.message)
         
     def guess_kanji(self):
