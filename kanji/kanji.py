@@ -3,7 +3,7 @@ import csv
 import os
 import codecs
 import webbrowser
-import urllib
+from urllib import parse
 from tkinter import Tk, Label, Button, Entry, StringVar, DISABLED, NORMAL, END, W, E
 
 class GuessingGame:
@@ -206,7 +206,7 @@ class GuessingGame:
         if self.current_kanji:
             url = \
             'https://www.tanoshiijapanese.com/dictionary/kanji_details.cfm?character_id=25173&k={}'.format(
-                urllib.parse.quote(self.current_kanji, encoding='utf-8')
+                parse.quote(self.current_kanji, encoding='utf-8')
             )
             webbrowser.open_new_tab(url)
             
