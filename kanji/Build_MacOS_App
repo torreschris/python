@@ -1,0 +1,2 @@
+py2applet --make-setup kanji.py
+python3 setup.py py2app -A
