@@ -5,6 +5,7 @@ import codecs
 import webbrowser
 from urllib import parse
 from tkinter import Tk, Label, Button, Entry, StringVar, DISABLED, NORMAL, END, W, E
+from PIL import ImageTk,Image
 
 class GuessingGame:
     def __init__(self, master):
@@ -14,7 +15,6 @@ class GuessingGame:
         master.protocol("WM_DELETE_WINDOW", self.on_close)
 
         self.read_csv_kanji()
-        # Add method to read JSON file (if exists) and set EXP column to 5 
 
         self.guess = ''
         self.num_guesses = 0
@@ -27,6 +27,11 @@ class GuessingGame:
         self.kanji_cards = 0
         self.current_kanji = None
         self.previous_kanji = None
+        self.file_name = None
+        
+        self.SPRITE_SHEETS = [['sprites/Pokemon 1st Generation Normal.png',256, 15, 15]]
+        self.sprites = []
+        self.loadPokemonImages()
 
         self.message = "Kanji Game"
         self.label_text = StringVar()
@@ -46,21 +51,25 @@ class GuessingGame:
         self.entry.configure(justify='center')
 
         self.guess_button = Button(master, text="Start - Romaji", command=self.guess_kanji)
-        self.reset_button = Button(master, text="Next", command=self.reset, state=DISABLED)
+        self.image_Label = Label(master)
+        self.next_button = Button(master, text="Next", command=self.reset, state=DISABLED)
 
-        self.label.grid(row=0, column=0, padx=5, pady=5, columnspan=2, sticky=W+E)
-        self.entry.grid(row=1, column=0, padx=5, pady=5, columnspan=2, sticky=W+E)
+        self.label.grid(row=0, column=0, padx=5, pady=5, columnspan=3, sticky=W+E)
+        self.entry.grid(row=1, column=0, padx=5, pady=5, columnspan=3, sticky=W+E)
         self.guess_button.grid(row=2, column=0, padx=5, pady=5)
-        self.reset_button.grid(row=2, column=1, padx=5, pady=5)
-        self.status_Label.grid(row=3, columnspan=2, padx=5, pady=5)
+        self.image_Label.grid(row=2, column=1, padx=5, pady=5)
+        self.next_button.grid(row=2, column=2, padx=5, pady=5)
+        self.status_Label.grid(row=3, columnspan=3, padx=5, pady=5)
 
         self.entry.focus()
+        self.setImage(self.randomrow)
     
     def return_Event(self, event=None):
         if self.guess_button['state'] == 'normal':
             self.guess_kanji()
         else:
             self.reset()
+            self.setImage(self.randomrow)
 
 
     def read_csv_kanji(self):
@@ -103,6 +112,7 @@ class GuessingGame:
         self.current_kanji = self.message
         self.previous_kanji = self.current_kanji  
         self.label_text.set(self.message)
+        self.setImage(self.randomrow)
         
     def guess_kanji(self):
         if self.guess_button['text'] == 'Start - Romaji':
@@ -120,13 +130,14 @@ class GuessingGame:
             self.message = "Correct!\n\n{}: {}\n\nTranslation: {}".format(
                 self.message, pronounciation, translation)
             self.exp_up()
+            self.caughtImg()
         else:
             self.message = "Incorrect\n\n{}: {}\n\nTranslation: {}".format(
                 self.message, pronounciation, translation)
 
         self.label_text.set(self.message)
         self.guess_button.configure(state=DISABLED)
-        self.reset_button.configure(state=NORMAL)
+        self.next_button.configure(state=NORMAL)
         self.master.eval('tk::PlaceWindow . center')
         self.entry.focus()
 
@@ -138,7 +149,7 @@ class GuessingGame:
         self.update_status()
 
         self.guess_button.configure(state=NORMAL)
-        self.reset_button.configure(state=DISABLED)
+        self.next_button.configure(state=DISABLED)
         self.status_Label.configure(bg='grey')
         self.master.eval('tk::PlaceWindow . center')
         self.entry.focus()
@@ -209,7 +220,46 @@ class GuessingGame:
                 parse.quote(self.current_kanji, encoding='utf-8')
             )
             webbrowser.open_new_tab(url)
-            
+
+    def loadPokemonImages(self):
+        '''Loads each sprite into object that defines upper-left, lower-right'''
+        for spriteSheet in self.SPRITE_SHEETS:
+            rez = spriteSheet[1]
+            row = spriteSheet[2]
+            col = spriteSheet[3]
+
+            for i in range(row):
+                y = i
+                yd = i + 1
+                for j in range(col):
+                    x = j
+                    xd = j + 1
+                
+                    crop_rectangle = (rez*x, rez*y, rez*xd, rez*yd)
+                    self.sprites.append({spriteSheet[0]:crop_rectangle})
+
+    def setImage(self, num):
+        '''Crops and resizes sprite to 128x128. Then sets it to label bg'''
+        file_name = list(self.sprites[num].keys())[0]
+        # Do not re-read the file if previously opened 
+        if file_name != self.file_name:
+            self.img = Image.open(file_name).convert("RGBA")
+        self.file_name = file_name
+
+        cropped_im = self.img.crop(self.sprites[num][self.file_name])
+
+        cropped_im.save('sprites/temp.png', 'png')
+        img = Image.open("sprites/temp.png").convert("RGBA")
+        img = img.resize((128,128), Image.ANTIALIAS)
+
+        self.image = ImageTk.PhotoImage(img)
+        self.image_Label['image'] = self.image  
+
+    def caughtImg(self):
+        img = Image.open("sprites/caught.png").convert("RGBA")
+        img = img.resize((100,100), Image.ANTIALIAS)
+        self.image = ImageTk.PhotoImage(img)
+        self.image_Label['image'] = self.image  
 
 root = Tk()
 my_gui = GuessingGame(root)
