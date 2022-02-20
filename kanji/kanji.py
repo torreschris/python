@@ -250,8 +250,8 @@ class GuessingGame:
             self.file_name = file_name
 
             self.cropped_im = self.img.crop(self.sprites[num][self.file_name])
-
             self.cropped_im.save('sprites/temp.png', 'png')
+
             img = Image.open("sprites/temp.png").convert("RGBA")
             img = img.resize((128,128), Image.ANTIALIAS)
 
@@ -262,12 +262,19 @@ class GuessingGame:
 
     def caughtImg(self):
         try:
+            # Needs to be read each time because the last size will be not work
             caughtImg = Image.open("sprites/caught.png").convert("RGBA")
+            
+            # Opens the current sprite that's displayed and resizes
+            tempImg = Image.open("sprites/temp.png").convert("RGBA")
+            tempImg = tempImg.resize((128,128), Image.ANTIALIAS)
 
-            for i in range(1,258,32):
+            # Range needs to be slightly larger than rez, otherwise image will not overlap
+            for i in range(1,130,16):
                 self.imgResized = caughtImg.resize((i,i), Image.ANTIALIAS)
-                self.cropped_im.paste(self.imgResized, (256-i,256-i))
-                self.image = ImageTk.PhotoImage(self.cropped_im)
+                # Start in the center then expand 
+                tempImg.paste(self.imgResized, (64-i//2, 64-i//2))
+                self.image = ImageTk.PhotoImage(tempImg)
                 self.image_Label['image'] = self.image 
                 self.master.update()
             
