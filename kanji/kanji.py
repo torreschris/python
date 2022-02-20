@@ -57,9 +57,9 @@ class GuessingGame:
         self.label.grid(row=0, column=0, padx=5, pady=5, columnspan=3, sticky=W+E)
         self.entry.grid(row=1, column=0, padx=5, pady=5, columnspan=3, sticky=W+E)
         self.guess_button.grid(row=2, column=0, padx=5, pady=5)
-        self.image_Label.grid(row=2, column=1, padx=5, pady=5)
+        self.image_Label.grid(row=2, column=1, padx=10, pady=5)
         self.next_button.grid(row=2, column=2, padx=5, pady=5)
-        self.status_Label.grid(row=3, columnspan=3, padx=5, pady=5)
+        self.status_Label.grid(row=3, columnspan=3, padx=5, pady=5,sticky=W+E)
 
         self.entry.focus()
         self.setImage(self.randomrow)
@@ -130,7 +130,6 @@ class GuessingGame:
             self.message = "Correct!\n\n{}: {}\n\nTranslation: {}".format(
                 self.message, pronounciation, translation)
             self.exp_up()
-            self.caughtImg()
         else:
             self.message = "Incorrect\n\n{}: {}\n\nTranslation: {}".format(
                 self.message, pronounciation, translation)
@@ -140,6 +139,9 @@ class GuessingGame:
         self.next_button.configure(state=NORMAL)
         self.master.eval('tk::PlaceWindow . center')
         self.entry.focus()
+
+        if self.guess == pronounciation:
+            self.caughtImg()
 
     def reset(self):
         self.entry.delete(0, END)
@@ -191,7 +193,7 @@ class GuessingGame:
 
     def update_status(self):
         self.get_kanji_exp()
-        self.status_message = "Lvl: {}\tStage: {}\tKanji EXP: {}\t\tKanji Cards: {}".format(
+        self.status_message = "Level: {}\tStage: {}\tThis Kanji Exp: {}\tUnique Kanji Caught: {}".format(
             self.level, self.stage, self.kanji_exp, self.kanji_cards)
         self.status_label_text.set(self.status_message)
 
@@ -240,26 +242,37 @@ class GuessingGame:
 
     def setImage(self, num):
         '''Crops and resizes sprite to 128x128. Then sets it to label bg'''
-        file_name = list(self.sprites[num].keys())[0]
-        # Do not re-read the file if previously opened 
-        if file_name != self.file_name:
-            self.img = Image.open(file_name).convert("RGBA")
-        self.file_name = file_name
+        try:
+            file_name = list(self.sprites[num].keys())[0]
+            # Do not re-read the file if previously opened 
+            if file_name != self.file_name:
+                self.img = Image.open(file_name).convert("RGBA")
+            self.file_name = file_name
 
-        cropped_im = self.img.crop(self.sprites[num][self.file_name])
+            self.cropped_im = self.img.crop(self.sprites[num][self.file_name])
 
-        cropped_im.save('sprites/temp.png', 'png')
-        img = Image.open("sprites/temp.png").convert("RGBA")
-        img = img.resize((128,128), Image.ANTIALIAS)
+            self.cropped_im.save('sprites/temp.png', 'png')
+            img = Image.open("sprites/temp.png").convert("RGBA")
+            img = img.resize((128,128), Image.ANTIALIAS)
 
-        self.image = ImageTk.PhotoImage(img)
-        self.image_Label['image'] = self.image  
+            self.image = ImageTk.PhotoImage(img)
+            self.image_Label['image'] = self.image  
+        except Exception:
+            print(Exception)
 
     def caughtImg(self):
-        img = Image.open("sprites/caught.png").convert("RGBA")
-        img = img.resize((100,100), Image.ANTIALIAS)
-        self.image = ImageTk.PhotoImage(img)
-        self.image_Label['image'] = self.image  
+        try:
+            caughtImg = Image.open("sprites/caught.png").convert("RGBA")
+
+            for i in range(1,258,32):
+                self.imgResized = caughtImg.resize((i,i), Image.ANTIALIAS)
+                self.cropped_im.paste(self.imgResized, (256-i,256-i))
+                self.image = ImageTk.PhotoImage(self.cropped_im)
+                self.image_Label['image'] = self.image 
+                self.master.update()
+            
+        except Exception:
+            print(Exception)
 
 root = Tk()
 my_gui = GuessingGame(root)
