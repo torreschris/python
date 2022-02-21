@@ -28,6 +28,7 @@ class GuessingGame:
         self.current_kanji = None
         self.previous_kanji = None
         self.file_name = None
+        self.POKEBALLS = list(range(0,5))
         
         self.SPRITE_SHEETS = [['sprites/Pokemon 1st Generation Normal.png',256, 15, 15]]
         self.sprites = []
@@ -263,8 +264,14 @@ class GuessingGame:
     def caughtImg(self):
         try:
             # Needs to be read each time because the last size will be not work
-            caughtImg = Image.open("sprites/caught.png").convert("RGBA")
-            
+            if self.kanji_exp == 1: 
+                caughtImg = Image.open("sprites/new_catch.png").convert("RGBA")
+            else:
+                caughtImg = Image.open("sprites/Mobile - Pokemon GO - Poke Balls.png").convert("RGBA")
+                randBall = random.choice(self.POKEBALLS)
+                crop_rectangle = (256*randBall, 0, 256*(randBall+1), 256)
+                caughtImg = caughtImg.crop(crop_rectangle)
+
             # Opens the current sprite that's displayed and resizes
             tempImg = Image.open("sprites/temp.png").convert("RGBA")
             tempImg = tempImg.resize((128,128), Image.ANTIALIAS)
