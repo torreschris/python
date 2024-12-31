@@ -8,15 +8,11 @@ from tkinter import Tk, Label, Button, Entry, StringVar, DISABLED, NORMAL, END, 
 from PIL import ImageTk,Image
 
 class GuessingGame:
-    def __init__(self, master):
-        self.master = master
-        master.title("Learn Kanji")
-        master.eval('tk::PlaceWindow . center')
-        master.protocol("WM_DELETE_WINDOW", self.on_close)
-
+    def __init__(self):
         self.read_csv_kanji()
 
         self.guess = ''
+        self.status_message = ''
         self.num_guesses = 0
         self.randomrow = 0
         self.level = 1
@@ -35,35 +31,9 @@ class GuessingGame:
         self.loadPokemonImages()
 
         self.message = "Kanji Game"
-        self.label_text = StringVar()
-        self.label_text.set(self.message)
-        self.label = Label(master, textvariable=self.label_text)
-        self.label.configure(font=("Courier", 44))
-        self.label.bind("<Button-1>", lambda e : self.open_url())
+        #self.label.bind("<Button-1>", lambda e : self.open_url())
         
-        # Statusbar 
-        self.status_label_text = StringVar()
-        self.status_Label = Label(master, textvariable=self.status_label_text, bg='grey')
-        self.level_up_check()
-        self.update_status()
-
-        self.entry = Entry(master)
-        self.entry.bind('<Return>', self.return_Event)
-        self.entry.configure(justify='center')
-
-        self.guess_button = Button(master, text="Start - Romaji", command=self.guess_kanji)
-        self.image_Label = Label(master)
-        self.next_button = Button(master, text="Next", command=self.reset, state=DISABLED)
-
-        self.label.grid(row=0, column=0, padx=5, pady=5, columnspan=3, sticky=W+E)
-        self.entry.grid(row=1, column=0, padx=5, pady=5, columnspan=3, sticky=W+E)
-        self.guess_button.grid(row=2, column=0, padx=5, pady=5)
-        self.image_Label.grid(row=2, column=1, padx=10, pady=5)
-        self.next_button.grid(row=2, column=2, padx=5, pady=5)
-        self.status_Label.grid(row=3, columnspan=3, padx=5, pady=5,sticky=W+E)
-
-        self.entry.focus()
-        self.setImage(self.randomrow)
+        # Statusbar
     
     def return_Event(self, event=None):
         if self.guess_button['state'] == 'normal':
@@ -112,18 +82,18 @@ class GuessingGame:
         self.message = self.mydict[self.randomrow]['japanese'] 
         self.current_kanji = self.message
         self.previous_kanji = self.current_kanji  
-        self.label_text.set(self.message)
+        #self.label_text.set(self.message)
         self.setImage(self.randomrow)
         
     def guess_kanji(self):
-        if self.guess_button['text'] == 'Start - Romaji':
-            self.guess_button.configure(text='Submit')
-            self.pick_Random_Kanji()
-            return
+        #if self.guess_button['text'] == 'Start - Romaji':
+        #    self.guess_button.configure(text='Submit')
+        #    self.pick_Random_Kanji()
+        #    return
 
         pronounciation = self.mydict[self.randomrow]['pronounciation']
         translation = self.mydict[self.randomrow]['translation']
-        self.guess = self.entry.get().strip()
+        #self.guess = self.entry.get().strip()
 
         if not self.guess:
             return
@@ -135,27 +105,17 @@ class GuessingGame:
             self.message = "Incorrect\n\n{}: {}\n\nTranslation: {}".format(
                 self.message, pronounciation, translation)
 
-        self.label_text.set(self.message)
-        self.guess_button.configure(state=DISABLED)
-        self.next_button.configure(state=NORMAL)
-        self.master.eval('tk::PlaceWindow . center')
-        self.entry.focus()
-
         if self.guess == pronounciation:
             self.caughtImg()
 
     def reset(self):
-        self.entry.delete(0, END)
+
         self.guess = ''
 
         self.pick_Random_Kanji()
         self.update_status()
 
-        self.guess_button.configure(state=NORMAL)
-        self.next_button.configure(state=DISABLED)
-        self.status_Label.configure(bg='grey')
-        self.master.eval('tk::PlaceWindow . center')
-        self.entry.focus()
+
 
     def exp_up(self):
         self.total_exp += 1
@@ -176,9 +136,9 @@ class GuessingGame:
             
         try:
             # Turn label background color if stage increased
-            if self.mydict[reviewcard_count]['stage'] != str(self.stage):
-                self.status_Label.configure(bg='OrangeRed2')
-                self.master.eval('tk::PlaceWindow . center')
+            #if self.mydict[reviewcard_count]['stage'] != str(self.stage):
+            #    self.status_Label.configure(bg='OrangeRed2')
+            #    self.master.eval('tk::PlaceWindow . center')
         
             # Update stage or level 
             self.stage = int(self.mydict[reviewcard_count]['stage'])
@@ -194,9 +154,9 @@ class GuessingGame:
 
     def update_status(self):
         self.get_kanji_exp()
-        self.status_message = "Level: {}\tStage: {}\tThis Kanji Exp: {}\tUnique Kanji Caught: {}".format(
+        self.status_message = "Level: {}\nStage: {}\nThis Kanji Exp: {}\nUnique Kanji Caught: {}".format(
             self.level, self.stage, self.kanji_exp, self.kanji_cards)
-        self.status_label_text.set(self.status_message)
+        #self.status_label_text.set(self.status_message)
 
     def get_kanji_exp(self):
         if self.mydict[self.randomrow]['EXP'] == 'FALSE':
@@ -257,7 +217,7 @@ class GuessingGame:
             img = img.resize((128,128), Image.ANTIALIAS)
 
             self.image = ImageTk.PhotoImage(img)
-            self.image_Label['image'] = self.image  
+            #self.image_Label['image'] = self.image  
         except Exception:
             print(Exception)
 
@@ -288,6 +248,6 @@ class GuessingGame:
         except Exception:
             print(Exception)
 
-root = Tk()
-my_gui = GuessingGame(root)
-root.mainloop()
+#root = Tk()
+#my_gui = GuessingGame(root)
+#root.mainloop()
