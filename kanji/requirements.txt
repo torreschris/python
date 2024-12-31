@@ -4,8 +4,7 @@ os
 codecs
 webbrowser
 urllib
-PIL
-kanji 
+PIL 
 time
 streamlit 
 hashlib
