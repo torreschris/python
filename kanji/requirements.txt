@@ -1,4 +1,3 @@
-os
 codecs
 webbrowser
 urllib
