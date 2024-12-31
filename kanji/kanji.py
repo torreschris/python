@@ -4,7 +4,6 @@ import os
 import codecs
 import webbrowser
 from urllib import parse
-from tkinter import Tk, Label, Button, Entry, StringVar, DISABLED, NORMAL, END, W, E
 from PIL import ImageTk,Image
 
 class GuessingGame:
@@ -43,12 +42,9 @@ class GuessingGame:
             self.setImage(self.randomrow)
 
 
-    def read_csv_kanji(self):
+    def read_csv_kanji(self, filename='allkanji.csv'):
         dir_path = os.path.dirname(os.path.realpath(__file__))
-        filepath = os.path.join(dir_path, 'player.csv')
-        if not os.path.exists(filepath):
-            filepath = os.path.join(dir_path, 'allkanji.csv')
-        
+        filepath = os.path.join(dir_path, filename)       
         mydict = csv.DictReader(open(filepath, encoding="utf-8"))
         self.mydict = []
         for row in mydict:
@@ -82,7 +78,6 @@ class GuessingGame:
         self.message = self.mydict[self.randomrow]['japanese'] 
         self.current_kanji = self.message
         self.previous_kanji = self.current_kanji  
-        #self.label_text.set(self.message)
         self.setImage(self.randomrow)
         
     def guess_kanji(self):
@@ -99,23 +94,19 @@ class GuessingGame:
             return
         elif self.guess == pronounciation:
             self.message = "Correct!\n\n{}: {}\n\nTranslation: {}".format(
-                self.message, pronounciation, translation)
+                self.current_kanji, pronounciation, translation)
             self.exp_up()
         else:
             self.message = "Incorrect\n\n{}: {}\n\nTranslation: {}".format(
-                self.message, pronounciation, translation)
+                self.current_kanji, pronounciation, translation)
 
         if self.guess == pronounciation:
             self.caughtImg()
 
     def reset(self):
-
         self.guess = ''
-
         self.pick_Random_Kanji()
         self.update_status()
-
-
 
     def exp_up(self):
         self.total_exp += 1
@@ -135,11 +126,6 @@ class GuessingGame:
                 self.kanji_cards = reviewcard_count - self.reviewcard_handicap
             
         try:
-            # Turn label background color if stage increased
-            #if self.mydict[reviewcard_count]['stage'] != str(self.stage):
-            #    self.status_Label.configure(bg='OrangeRed2')
-            #    self.master.eval('tk::PlaceWindow . center')
-        
             # Update stage or level 
             self.stage = int(self.mydict[reviewcard_count]['stage'])
             self.level = int(self.mydict[reviewcard_count]['level'])
@@ -156,7 +142,6 @@ class GuessingGame:
         self.get_kanji_exp()
         self.status_message = "Level: {}\nStage: {}\nThis Kanji Exp: {}\nUnique Kanji Caught: {}".format(
             self.level, self.stage, self.kanji_exp, self.kanji_cards)
-        #self.status_label_text.set(self.status_message)
 
     def get_kanji_exp(self):
         if self.mydict[self.randomrow]['EXP'] == 'FALSE':
@@ -173,8 +158,6 @@ class GuessingGame:
             writer.writeheader()
             for row in self.mydict:
                 writer.writerow(row)
-        
-        self.master.destroy()
 
     def open_url(self):
         if self.current_kanji:

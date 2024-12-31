@@ -9,7 +9,8 @@ if "username" not in st.session_state:
 
 st.sidebar.header('Logged in as:')
 emptysidebar = st.sidebar.empty()
-emptysidebar.markdown(f'<p style="font-family:Verdana; font-size:16px; color:green;">{st.session_state.username}</p>', unsafe_allow_html=True)
+text_color = "green" if st.session_state.username != "Guest" else "red"
+emptysidebar.markdown(f'<p style="font-family:Verdana; font-size:16px; color:{text_color};">{st.session_state.username}</p>', unsafe_allow_html=True)
 
 username = st.text_input(label='Username:')
 password = st.text_input(label='Password:',type='password')
