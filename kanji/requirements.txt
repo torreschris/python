@@ -1,0 +1,12 @@
+random
+csv
+os
+codecs
+webbrowser
+urllib
+PIL
+kanji 
+time
+streamlit 
+hashlib
+shutil
