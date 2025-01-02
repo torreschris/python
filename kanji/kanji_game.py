@@ -12,7 +12,7 @@ if "username" not in st.session_state:
     st.session_state.username = "Guest"
 
 if st.session_state.username != "Guest":
-    kj.read_csv_kanji(f'users/{st.session_state.csvfile}')
+    kj.read_csv_kanji(f'kanji/users/{st.session_state.csvfile}')
 
 if "submit_state" not in st.session_state:
     st.session_state.submit_state = False
