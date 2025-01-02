@@ -12,13 +12,14 @@ if "username" not in st.session_state:
     st.session_state.username = "Guest"
 
 if st.session_state.username != "Guest":
-    kj.read_csv_kanji(f'kanji/users/{st.session_state.csvfile}')
+    kj.read_csv_kanji(f'users/{st.session_state.csvfile}')
 
 if "submit_state" not in st.session_state:
     st.session_state.submit_state = False
 
 st.title("Learn Kanji")
 st.sidebar.header('Logged in as:')
+
 emptysidebar = st.sidebar.empty()
 text_color = "green" if st.session_state.username != "Guest" else "red"
 emptysidebar.markdown(f'<p style="font-family:Verdana; font-size:16px; color:{text_color};">{st.session_state.username}</p>', unsafe_allow_html=True)

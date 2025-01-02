@@ -27,6 +27,7 @@ if st.button('login'):
     if os.path.isfile(f'kanji/users/{checksum}'):
         st.success('Succesfully logged in!')
         st.session_state.username = username
+        st.session_state.csvfile = checksum
         st.balloons()
         emptysidebar.markdown(f'<p style="font-family:Verdana; font-size:16px; color:green;">{st.session_state.username}</p>', unsafe_allow_html=True)
 
