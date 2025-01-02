@@ -84,6 +84,7 @@ def submit_button_event():
     kj.guess = st.session_state.kanji_input
     kj.guess_kanji()
     st.session_state.submit_state = True
+    kanji_placeholder.markdown(f'<div class="custom-font">{kj.message}</div>',unsafe_allow_html=True)
     #countdown(5)
     #next_button_event()
     

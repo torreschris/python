@@ -11,7 +11,6 @@ if "username" not in st.session_state:
     st.session_state.username = "Guest"
 
 st.title("New user account")
-st.write(os.getcwd())
 # Styled text
 st.sidebar.header('Logged in as:')
 text_color = "green" if st.session_state.username != "Guest" else "red"
