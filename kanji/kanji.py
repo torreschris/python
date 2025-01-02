@@ -25,7 +25,7 @@ class GuessingGame:
         self.file_name = None
         self.POKEBALLS = list(range(0,5))
         
-        self.SPRITE_SHEETS = [['sprites/Pokemon 1st Generation Normal.png',256, 15, 15]]
+        self.SPRITE_SHEETS = [['kanji/sprites/Pokemon 1st Generation Normal.png',256, 15, 15]]
         self.sprites = []
         self.loadPokemonImages()
 
@@ -194,9 +194,9 @@ class GuessingGame:
             self.file_name = file_name
 
             self.cropped_im = self.img.crop(self.sprites[num][self.file_name])
-            self.cropped_im.save('sprites/temp.png', 'png')
+            self.cropped_im.save('kanji/sprites/temp.png', 'png')
 
-            img = Image.open("sprites/temp.png").convert("RGBA")
+            img = Image.open("kanji/sprites/temp.png").convert("RGBA")
             img = img.resize((128,128), Image.ANTIALIAS)
 
             self.image = ImageTk.PhotoImage(img)
@@ -208,9 +208,9 @@ class GuessingGame:
         try:
             # Needs to be read each time because the last size will be not work
             if self.kanji_exp == 1: 
-                caughtImg = Image.open("sprites/new_catch.png").convert("RGBA")
+                caughtImg = Image.open("kanji/sprites/new_catch.png").convert("RGBA")
             else:
-                caughtImg = Image.open("sprites/Mobile - Pokemon GO - Poke Balls.png").convert("RGBA")
+                caughtImg = Image.open("kanji/sprites/Mobile - Pokemon GO - Poke Balls.png").convert("RGBA")
                 randBall = random.choice(self.POKEBALLS)
                 crop_rectangle = (256*randBall, 0, 256*(randBall+1), 256)
                 caughtImg = caughtImg.crop(crop_rectangle)

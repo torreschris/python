@@ -49,7 +49,7 @@ st.markdown(
 
 with cols[1]:
     kanji_image = st.empty()
-    kanji_image.image(image='sprites/temp.png',use_container_width=True)
+    kanji_image.image(image='kanji/sprites/temp.png',use_container_width=True)
 
 kanji_placeholder = st.empty()
 kanji_placeholder.markdown(f'<div class="custom-font">{kj.message}</div>',unsafe_allow_html=True)
@@ -92,7 +92,7 @@ def next_button_event():
     kj.reset()
     st.session_state.submit_state = False
 
-    kanji_image.image(image='sprites/temp.png',use_container_width=True)
+    kanji_image.image(image='kanji/sprites/temp.png',use_container_width=True)
     kanji_placeholder.markdown(f'<div class="custom-font">{kj.message}</div>',unsafe_allow_html=True)
 
 col1.button("Submit", disabled=st.session_state.submit_state,on_click=submit_button_event)

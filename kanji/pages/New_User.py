@@ -11,7 +11,7 @@ if "username" not in st.session_state:
     st.session_state.username = "Guest"
 
 st.title("New user account")
-
+st.write(os.getcwd())
 # Styled text
 st.sidebar.header('Logged in as:')
 text_color = "green" if st.session_state.username != "Guest" else "red"
@@ -30,11 +30,11 @@ checksum = hashlib.md5(input_string.encode()).hexdigest() + ".csv"
 if st.button('Create new account', disabled=st.session_state.button_clicked):
     if not password:
         st.error('Password cannot be blank.')
-    elif not os.path.isfile(f'users/{checksum}'):
+    elif not os.path.isfile(f'kanji/users/{checksum}'):
         st.success('New account successfully created!')
         st.session_state['username'] = username
         st.session_state['csvfile'] = checksum
-        shutil.copy('allkanji.csv', f'users/{checksum}')
+        shutil.copy('kanji/allkanji.csv', f'kanji/users/{checksum}')
         st.session_state.button_clicked = True
     else:
         st.error('Username and password is already in use, please try again.')
