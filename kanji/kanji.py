@@ -4,7 +4,7 @@ import os
 import codecs
 import webbrowser
 from urllib import parse
-from PIL import ImageTk,Image
+from PIL import Image
 
 class GuessingGame:
     def __init__(self):
@@ -199,7 +199,7 @@ class GuessingGame:
             img = Image.open("kanji/sprites/temp.png").convert("RGBA")
             img = img.resize((128,128), Image.ANTIALIAS)
 
-            self.image = ImageTk.PhotoImage(img)
+            #self.image = ImageTk.PhotoImage(img)
             #self.image_Label['image'] = self.image  
         except Exception:
             print(Exception)
@@ -224,7 +224,7 @@ class GuessingGame:
                 self.imgResized = caughtImg.resize((i,i), Image.ANTIALIAS)
                 # Start in the center then expand 
                 tempImg.paste(self.imgResized, (64-i//2, 64-i//2))
-                self.image = ImageTk.PhotoImage(tempImg)
+                #self.image = ImageTk.PhotoImage(tempImg)
                 self.image_Label['image'] = self.image 
                 self.master.update()
             
