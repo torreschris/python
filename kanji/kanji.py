@@ -30,7 +30,9 @@ class GuessingGame:
         self.loadPokemonImages()
 
         self.message = "Kanji Game"
-        #self.label.bind("<Button-1>", lambda e : self.open_url())
+        self.level_up_check()
+        self.reset()
+        self.update_status()
         
         # Statusbar
     
@@ -144,10 +146,10 @@ class GuessingGame:
         
         self.kanji_exp = int(self.mydict[self.randomrow]['EXP'])
 
-    def on_close(self):
+    def save_progress(self,filename):
         ''' When closing the window, write the progress to a file'''
         dir_path = os.path.dirname(os.path.realpath(__file__))
-        filepath = os.path.join(dir_path, 'player.csv')
+        filepath = os.path.join(dir_path,'users',filename)
         with codecs.open(filepath, 'w', 'utf-8') as csv_file: 
             writer = csv.DictWriter(csv_file, fieldnames=self.mydict[0].keys())
             writer.writeheader()

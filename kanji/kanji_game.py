@@ -39,6 +39,8 @@ def submit_button_event():
     with cols[2]:
         st.markdown(f'<div class="custom-font">{kj.message}</div>',unsafe_allow_html=True)
     mystats.text(kj.status_message)
+    if st.session_state.username != "Guest":
+        kj.save_progress(st.session_state.csvfile)
 
 def next_button_event():
     kj.reset()
