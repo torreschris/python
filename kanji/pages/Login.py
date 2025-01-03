@@ -21,8 +21,6 @@ input_string = username + password
 # Create an MD5 checksum
 checksum = hashlib.md5(input_string.encode()).hexdigest() + ".csv"
 
-#st.write("MD5 Checksum: " +  checksum)
-
 if st.button('login'):
     if os.path.isfile(f'kanji/users/{checksum}'):
         st.success('Succesfully logged in!')

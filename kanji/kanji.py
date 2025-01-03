@@ -231,6 +231,25 @@ class GuessingGame:
         except Exception:
             print(Exception)
 
+    def shuffleAnswers(self):
+        always_include = self.randomrow
+        remaining_list = [item for item in range(0,len(self.mydict)) if item != always_include]
+
+        # Select 2 random items from the remaining list
+        random_rows = random.sample(remaining_list, 2)
+
+        # Combine "Alice" with the random selection
+        result = [always_include] + random_rows
+
+        # Shuffle the result
+        random.shuffle(result)
+
+        answers = [self.mydict[result[0]]['pronounciation'],
+                   self.mydict[result[1]]['pronounciation'],
+                   self.mydict[result[2]]['pronounciation']]
+
+        return answers
+
 #root = Tk()
 #my_gui = GuessingGame(root)
 #root.mainloop()
