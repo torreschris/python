@@ -7,8 +7,8 @@ from urllib import parse
 from PIL import Image
 
 class GuessingGame:
-    def __init__(self):
-        self.read_csv_kanji()
+    def __init__(self,filename='allkanji.csv'):
+        self.read_csv_kanji(filename)
 
         self.guess = ''
         self.status_message = ''
@@ -81,11 +81,6 @@ class GuessingGame:
         self.setImage(self.randomrow)
         
     def guess_kanji(self):
-        #if self.guess_button['text'] == 'Start - Romaji':
-        #    self.guess_button.configure(text='Submit')
-        #    self.pick_Random_Kanji()
-        #    return
-
         pronounciation = self.mydict[self.randomrow]['pronounciation']
         translation = self.mydict[self.randomrow]['translation']
         #self.guess = self.entry.get().strip()
@@ -229,7 +224,7 @@ class GuessingGame:
                 self.master.update()
             
         except Exception:
-            print(Exception)
+            print(Exception.mro)
 
     def shuffleAnswers(self):
         always_include = self.randomrow

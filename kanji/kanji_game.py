@@ -1,6 +1,5 @@
 import streamlit as st
 import kanji 
-import time
 
 ### Session state stuff
 if "username" not in st.session_state:
@@ -14,13 +13,15 @@ if "kanji_input" not in st.session_state:
     st.session_state.kanji_input = ""
 
 if "kanji" not in st.session_state:
-    st.session_state.kanji = kanji.GuessingGame()
+    if st.session_state.username != "Guest":
+        st.session_state.kanji = kanji.GuessingGame(f'users/{st.session_state.csvfile}')
+    else:
+        st.session_state.kanji = kanji.GuessingGame()
     st.session_state.kanji.reset()
+    st.session_state.submit_state = False
 
 kj = st.session_state.kanji
 
-if st.session_state.username != "Guest":
-    kj.read_csv_kanji(f'users/{st.session_state.csvfile}')
 
 ### Functions to handle input and reset
 def handle_input():
@@ -37,6 +38,7 @@ def submit_button_event():
     st.session_state.submit_state = True
     with cols[2]:
         st.markdown(f'<div class="custom-font">{kj.message}</div>',unsafe_allow_html=True)
+    mystats.text(kj.status_message)
 
 def next_button_event():
     kj.reset()
@@ -113,15 +115,15 @@ else:
     empytyEzMode = st.empty()
     col3,col4,col5 = empytyEzMode.columns(3)
 
-    if col3.button(answers[0],use_container_width=True,disabled=st.session_state.submit_state):
+    if col3.button(answers[0],use_container_width=True):
         st.session_state.kanji_input = answers[0]
         submit_button_event()
         empytyEzMode.write('')
-    elif col4.button(answers[1],use_container_width=True,disabled=st.session_state.submit_state):
+    elif col4.button(answers[1],use_container_width=True):
         st.session_state.kanji_input = answers[1]
         submit_button_event()
         empytyEzMode.write('')
-    elif col5.button(answers[2],use_container_width=True,disabled=st.session_state.submit_state):
+    elif col5.button(answers[2],use_container_width=True):
         st.session_state.kanji_input = answers[2]
         submit_button_event()
         empytyEzMode.write('')
@@ -135,4 +137,3 @@ if gamemode == choices[0]:
     else:
         button_text = "Skip" 
     st.button(button_text,key="focus-button2", on_click=next_button_event, use_container_width=True)
-    
