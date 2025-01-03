@@ -78,7 +78,6 @@ st.markdown(
     """
     <style>
     .custom-font {
-        font-family: 'Comic Sans MS', cursive, sans-serif;
         font-size: 25px;
         text-align: center;
     }
