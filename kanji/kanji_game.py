@@ -41,6 +41,8 @@ def submit_button_event():
     mystats.text(kj.status_message)
     if st.session_state.username != "Guest":
         kj.save_progress(st.session_state.csvfile)
+    if st.session_state.submit_state:
+        kanji_image.image('kanji/sprites/caught.png')
 
 def next_button_event():
     kj.reset()
@@ -86,6 +88,9 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
+with cols[0]:
+    emptycaught = st.empty()
+
 with cols[1]:
     kanji_image = st.empty()
     kanji_image.image(image='kanji/sprites/temp.png',use_container_width=False)
@@ -93,6 +98,7 @@ with cols[1]:
 if st.session_state.submit_state:
     with cols[2]:
         st.markdown(f'<div class="custom-font">{kj.message}</div>',unsafe_allow_html=True)
+
 
 kanji_placeholder = st.empty()
 kanji_placeholder.markdown(f'<div class="custom-font">{kj.current_kanji}</div>',unsafe_allow_html=True)

@@ -30,9 +30,9 @@ class GuessingGame:
         self.loadPokemonImages()
 
         self.message = "Kanji Game"
-        self.level_up_check()
-        self.reset()
-        self.update_status()
+        # self.level_up_check()
+        # self.reset()
+        # self.update_status()
         
         # Statusbar
     
@@ -202,31 +202,33 @@ class GuessingGame:
             print(Exception)
 
     def caughtImg(self):
-        try:
+        #try:
             # Needs to be read each time because the last size will be not work
-            if self.kanji_exp == 1: 
-                caughtImg = Image.open("kanji/sprites/new_catch.png").convert("RGBA")
-            else:
-                caughtImg = Image.open("kanji/sprites/Mobile - Pokemon GO - Poke Balls.png").convert("RGBA")
-                randBall = random.choice(self.POKEBALLS)
-                crop_rectangle = (256*randBall, 0, 256*(randBall+1), 256)
-                caughtImg = caughtImg.crop(crop_rectangle)
+        if self.kanji_exp == 1: 
+            caughtImg = Image.open("kanji/sprites/new_catch.png").convert("RGBA")
+        else:
+            caughtImg = Image.open("kanji/sprites/Mobile - Pokemon GO - Poke Balls.png").convert("RGBA")
+            randBall = random.choice(self.POKEBALLS)
+            crop_rectangle = (256*randBall, 0, 256*(randBall+1), 256)
+            caughtImg = caughtImg.crop(crop_rectangle)
+        
+        caughtImg.save('kanji/sprites/caught.png')
 
             # Opens the current sprite that's displayed and resizes
-            tempImg = Image.open("sprites/temp.png").convert("RGBA")
-            tempImg = tempImg.resize((128,128), Image.ANTIALIAS)
+            # tempImg = Image.open("sprites/temp.png").convert("RGBA")
+            # tempImg = tempImg.resize((128,128), Image.ANTIALIAS)
 
             # Range needs to be slightly larger than rez, otherwise image will not overlap
-            for i in range(1,130,16):
-                self.imgResized = caughtImg.resize((i,i), Image.ANTIALIAS)
-                # Start in the center then expand 
-                tempImg.paste(self.imgResized, (64-i//2, 64-i//2))
-                #self.image = ImageTk.PhotoImage(tempImg)
-                self.image_Label['image'] = self.image 
-                self.master.update()
+            # for i in range(1,130,16):
+            #     self.imgResized = caughtImg.resize((i,i), Image.ANTIALIAS)
+            #     # Start in the center then expand 
+            #     tempImg.paste(self.imgResized, (64-i//2, 64-i//2))
+            #     #self.image = ImageTk.PhotoImage(tempImg)
+            #     self.image_Label['image'] = self.image 
+            #     self.master.update()
             
-        except Exception:
-            print(Exception.mro)
+        #except Exception:
+        #    print(Exception.mro)
 
     def shuffleAnswers(self):
         always_include = self.randomrow
