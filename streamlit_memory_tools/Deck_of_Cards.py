@@ -8,9 +8,10 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 # --- Configuration ---
-CARD_FOLDER = "cards"
+CARD_FOLDER = os.path.join(os.path.dirname(__file__), "cards")
 THUMB_SIZE = (150, 200)
 INSERT_SIZE = (600, 800)
+
 
 # Load card image filenames
 card_files = sorted([f for f in os.listdir(CARD_FOLDER) if f.endswith((".png", ".jpg", ".jpeg"))])[::-1]
