@@ -30,11 +30,6 @@ class GuessingGame:
         self.loadPokemonImages()
 
         self.message = "Kanji Game"
-        # self.level_up_check()
-        # self.reset()
-        # self.update_status()
-        
-        # Statusbar
     
     def return_Event(self, event=None):
         if self.guess_button['state'] == 'normal':
@@ -214,22 +209,6 @@ class GuessingGame:
         
         caughtImg.save('kanji/sprites/caught.png')
 
-            # Opens the current sprite that's displayed and resizes
-            # tempImg = Image.open("sprites/temp.png").convert("RGBA")
-            # tempImg = tempImg.resize((128,128), Image.ANTIALIAS)
-
-            # Range needs to be slightly larger than rez, otherwise image will not overlap
-            # for i in range(1,130,16):
-            #     self.imgResized = caughtImg.resize((i,i), Image.ANTIALIAS)
-            #     # Start in the center then expand 
-            #     tempImg.paste(self.imgResized, (64-i//2, 64-i//2))
-            #     #self.image = ImageTk.PhotoImage(tempImg)
-            #     self.image_Label['image'] = self.image 
-            #     self.master.update()
-            
-        #except Exception:
-        #    print(Exception.mro)
-
     def shuffleAnswers(self):
         always_include = self.randomrow
         remaining_list = [item for item in range(0,len(self.mydict)) if item != always_include]
@@ -248,7 +227,3 @@ class GuessingGame:
                    self.mydict[result[2]]['pronounciation']]
 
         return answers
-
-#root = Tk()
-#my_gui = GuessingGame(root)
-#root.mainloop()
