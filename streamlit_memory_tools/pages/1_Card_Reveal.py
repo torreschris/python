@@ -4,7 +4,7 @@ import os
 import random
 
 # --- Config ---
-CARD_FOLDER = "cards"
+CARD_FOLDER = os.path.join(os.path.dirname(__file__), "cards")
 CARD_EXT = (".png", ".jpg", ".jpeg")
 
 # --- Page Setup ---
