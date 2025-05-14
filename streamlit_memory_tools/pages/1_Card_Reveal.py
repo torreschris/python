@@ -7,6 +7,21 @@ import random
 CARD_FOLDER = os.path.join(os.path.dirname(__file__),"..","cards")
 CARD_EXT = (".png", ".jpg", ".jpeg")
 
+# Suit symbol mapping
+suit_symbols = {
+    "hearts": "♥",
+    "diamonds": "♦",
+    "spades": "♠",
+    "clubs": "♣",
+    '11':'J',
+    '12':'Q',
+    '13':'K',
+    'king':'',
+    'queen':'',
+    'jack':'',
+    '_':''
+}
+
 # --- Page Setup ---
 st.set_page_config(page_title="Card Viewer", layout="centered")
 
@@ -36,9 +51,12 @@ with col3:
 index = st.session_state.current_index
 card_filename = st.session_state.shuffled_cards[index]
 card_name = card_filename.rsplit(".", 1)[0]
+for k in suit_symbols:
+    if k in card_name:
+        card_name = card_name.replace(k,suit_symbols[k])
 
 st.subheader(f"Card {index + 1} of {len(st.session_state.shuffled_cards)}")
-st.write(f"{card_name.replace('_', ' of ')}")
+st.write(card_name)
 # --- Show Image Button ---
 myempty = st.empty()
 if not st.session_state.revealed:
