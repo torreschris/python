@@ -38,11 +38,13 @@ card_filename = st.session_state.shuffled_cards[index]
 card_name = card_filename.rsplit(".", 1)[0]
 
 st.subheader(f"Card {index + 1} of {len(st.session_state.shuffled_cards)}")
-st.write(f"**Name:** {card_name.replace('_', ' of ')}")
+st.write(f"{card_name.replace('_', ' of ')}")
 # --- Show Image Button ---
+myempty = st.empty()
 if not st.session_state.revealed:
-    if st.button("👁️ Show Image"):
+    if myempty.button("👁️ Show Image"):
         st.session_state.revealed = True
+        myempty.write('')
 
 # --- Display Image if Revealed ---
 if st.session_state.revealed:
